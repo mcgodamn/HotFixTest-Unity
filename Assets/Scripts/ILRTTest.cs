@@ -63,18 +63,18 @@ public class ILRTTest : MonoBehaviour
         Debug.Log("调用无参数静态方法");
         stopwatch.Start();
         //调用无参数静态方法，appdomain.Invoke("类名", "方法名", 对象引用, 参数列表);
-        appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest", null, null);
+        for (int i = 0; i < 1000; i++) appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest", null, null);
 
         stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        Debug.LogWarning($"耗時 {stopwatch.Elapsed}");
 
         //调用带参数的静态方法
         stopwatch.Restart();
         Debug.Log("调用带参数的静态方法");
-        appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest2", null, 123);
+        for (int i = 0; i < 1000; i++) appdomain.Invoke("HotFix_Project.InstanceClass", "StaticFunTest2", null, 123);
 
         stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        Debug.LogWarning($"耗時 {stopwatch.Elapsed}");
 
         Debug.Log("通过IMethod调用方法");
         stopwatch.Restart();
@@ -83,10 +83,10 @@ public class ILRTTest : MonoBehaviour
         //根据方法名称和参数个数获取方法
         IMethod method = type.GetMethod("StaticFunTest", 0);
 
-        appdomain.Invoke(method, null, null);
+        for (int i = 0; i < 1000; i++) appdomain.Invoke(method, null, null);
 
         stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        Debug.LogWarning($"耗時 {stopwatch.Elapsed}");
 
         Debug.Log("指定参数类型来获得IMethod");
         stopwatch.Restart();
@@ -96,49 +96,49 @@ public class ILRTTest : MonoBehaviour
         paramList.Add(intType);
         //根据方法名称和参数类型列表获取方法
         method = type.GetMethod("StaticFunTest2", paramList, null);
-        appdomain.Invoke(method, null, 456);
+        for (int i = 0; i < 1000; i++) appdomain.Invoke(method, null, 456);
 
         stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        Debug.LogWarning($"耗時 {stopwatch.Elapsed}");
 
-        Debug.Log("实例化热更里的类");
-        stopwatch.Restart();
-        object obj = appdomain.Instantiate("HotFix_Project.InstanceClass", new object[] { 233 });
-        //第二种方式
-        object obj2 = ((ILType)type).Instantiate();
+        // Debug.Log("实例化热更里的类");
+        // stopwatch.Restart();
+        // object obj = appdomain.Instantiate("HotFix_Project.InstanceClass", new object[] { 233 });
+        // //第二种方式
+        // object obj2 = ((ILType)type).Instantiate();
 
-        stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        // stopwatch.Stop();
+        // Debug.Log($"耗時 {stopwatch.Elapsed}");
 
-        Debug.Log("调用成员方法");
-        stopwatch.Restart();
-        int id = (int)appdomain.Invoke("HotFix_Project.InstanceClass", "get_ID", obj, null);
-        Debug.Log("!! HotFix_Project.InstanceClass.ID = id");
-        id = (int)appdomain.Invoke("HotFix_Project.InstanceClass", "get_ID", obj2, null);
-        Debug.Log("!! HotFix_Project.InstanceClass.ID = id");
+        // Debug.Log("调用成员方法");
+        // stopwatch.Restart();
+        // int id = (int)appdomain.Invoke("HotFix_Project.InstanceClass", "get_ID", obj, null);
+        // Debug.Log("!! HotFix_Project.InstanceClass.ID = id");
+        // id = (int)appdomain.Invoke("HotFix_Project.InstanceClass", "get_ID", obj2, null);
+        // Debug.Log("!! HotFix_Project.InstanceClass.ID = id");
 
-        stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        // stopwatch.Stop();
+        // Debug.Log($"耗時 {stopwatch.Elapsed}");
 
-        Debug.Log("调用泛型方法");
-        stopwatch.Restart();
-        IType stringType = appdomain.GetType(typeof(string));
-        IType[] genericArguments = new IType[] { stringType };
-        appdomain.InvokeGenericMethod("HotFix_Project.InstanceClass", "GenericMethod", genericArguments, null, "TestString");
+        // Debug.Log("调用泛型方法");
+        // stopwatch.Restart();
+        // IType stringType = appdomain.GetType(typeof(string));
+        // IType[] genericArguments = new IType[] { stringType };
+        // appdomain.InvokeGenericMethod("HotFix_Project.InstanceClass", "GenericMethod", genericArguments, null, "TestString");
 
-        stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        // stopwatch.Stop();
+        // Debug.Log($"耗時 {stopwatch.Elapsed}");
 
-        Debug.Log("获取泛型方法的IMethod");
-        stopwatch.Restart();
-        paramList.Clear();
-        paramList.Add(intType);
-        genericArguments = new IType[] { intType };
-        method = type.GetMethod("GenericMethod", paramList, genericArguments);
-        appdomain.Invoke(method, null, 33333);
+        // Debug.Log("获取泛型方法的IMethod");
+        // stopwatch.Restart();
+        // paramList.Clear();
+        // paramList.Add(intType);
+        // genericArguments = new IType[] { intType };
+        // method = type.GetMethod("GenericMethod", paramList, genericArguments);
+        // appdomain.Invoke(method, null, 33333);
 
-        stopwatch.Stop();
-        Debug.Log($"耗時 {stopwatch.Elapsed}");
+        // stopwatch.Stop();
+        // Debug.Log($"耗時 {stopwatch.Elapsed}");
     }
 
 
