@@ -6,6 +6,7 @@ namespace Exodrifter.UnityPython.Examples
 	{
 		void Start()
 		{
+            var stopwatch = new System.Diagnostics.Stopwatch();
 			var engine = global::UnityPython.CreateEngine();
 			var scope = engine.CreateScope();
 
@@ -13,7 +14,10 @@ namespace Exodrifter.UnityPython.Examples
 			code += "UnityEngine.Debug.Log('Hello world!')";
 
 			var source = engine.CreateScriptSourceFromString(code);
-			source.Execute(scope);
-		}
+            stopwatch.Start();
+            for (int i = 0; i < 1000; i++) source.Execute(scope);
+            Debug.LogWarning($"耗時 {stopwatch.Elapsed}");
+
+        }
 	}
 }
